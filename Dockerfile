@@ -45,12 +45,14 @@ ENV GHOST_INSTALL /var/lib/ghost
 ENV GHOST_CONTENT /var/lib/ghost/content
 
 ENV GHOST_VERSION 4.16.0
-COPY Ghost-4.16.0.zip .
+
 RUN set -eux; \
 	mkdir -p "$GHOST_INSTALL"; \
-	chown node:node "$GHOST_INSTALL"; \
-	\
-	gosu node ghost install "$GHOST_VERSION" --zip ./Ghost-4.16.0.zip --db sqlite3 --no-prompt --no-stack --no-setup --dir "$GHOST_INSTALL"; \
+	chown node:node "$GHOST_INSTALL"; 
+	
+COPY Ghost-4.16.0.zip /var/lib/ghost
+RUN set -eux; \
+	gosu node ghost install "$GHOST_VERSION" --zip /var/lib/ghost/Ghost-4.16.0.zip --db sqlite3 --no-prompt --no-stack --no-setup --dir "$GHOST_INSTALL"; \
 	\
 # Tell Ghost to listen on all ips and not prompt for additional configuration
 	cd "$GHOST_INSTALL"; \
